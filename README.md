@@ -12,4 +12,4 @@ Reboot your device to revert the changes. (iOS14❌)
 # Credits
 - https://github.com/zhuowei (MacDirtyCow exploit)
 
-- https://twitter.com/straight_tamago (NoCameraSound)
+- https://twitter.com/straight_tamago (NoHomeBar)
