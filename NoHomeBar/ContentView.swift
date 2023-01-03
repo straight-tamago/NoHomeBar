@@ -14,6 +14,7 @@ struct ContentView: View {
     @State private var isVibrationOn = false
     @State private var LogMessage = ""
     @State private var ViewLog = true
+    @State private var Respring_confirm = false
     @State private var SettingsShowing = false
     @State private var Restore_Confirm = false
     @State private var Update_Alert = false
@@ -41,6 +42,12 @@ struct ContentView: View {
                 .alert(isPresented: $NoUpdate_Alert) {
                     Alert(title: Text("No Update"),
                           dismissButton: .default(Text("OK"))
+                    )
+                }
+                .alert(isPresented: $Respring_confirm) {
+                    Alert(title: Text("Restart SpringBoard"),
+                          primaryButton: .destructive(Text("Restart"),action: Respring),
+                          secondaryButton: .default(Text("Cancel"))
                     )
                 }
             HStack {
@@ -227,6 +234,17 @@ struct ContentView: View {
             TargetFilesPath.forEach {
                 LogMessage = overwrite(TargetFilePath: $0.path, OverwriteData: "xxx")
             }
+            Respring()
+        }
+    }
+    
+    func Respring() {
+        let sharedApplication = UIApplication.shared
+        let windows = sharedApplication.windows
+        if let window = windows.first {
+            while true {
+                window.snapshotView(afterScreenUpdates: false)
+            }
         }
     }
     
@@ -244,6 +262,7 @@ struct ContentView: View {
             TargetFilesPath.forEach {
                 LogMessage = overwrite(TargetFilePath: $0.path, OverwriteData: "BOM")
             }
+            Respring()
         }
     }
     
