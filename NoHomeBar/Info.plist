@@ -9,7 +9,7 @@
 			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>NoCameraSound</string>
+				<string>NoHomeBar</string>
 			</array>
 		</dict>
 	</array>

@@ -91,7 +91,7 @@ struct ContentView: View {
                 }.actionSheet(isPresented: $SettingsShowing) {
                     ActionSheet(title: Text("NoHomeBar v\(version)"), message: Text("by straight-tamago"), buttons: [
                         .default(Text("Source Code")) {
-                            if let url = URL(string: "https://github.com/straight-tamago/NoCameraSound") {
+                            if let url = URL(string: "https://github.com/straight-tamago/NoHomeBar") {
                                 UIApplication.shared.open(url)
                             }
                         },
@@ -228,22 +228,12 @@ struct ContentView: View {
                 TargetFilesPath.forEach {
                     LogMessage = overwrite(TargetFilePath: $0.path, OverwriteData: "xxx")
                 }
+                self.Respring_confirm = true
             }
         }
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
             TargetFilesPath.forEach {
                 LogMessage = overwrite(TargetFilePath: $0.path, OverwriteData: "xxx")
-            }
-            Respring()
-        }
-    }
-    
-    func Respring() {
-        let sharedApplication = UIApplication.shared
-        let windows = sharedApplication.windows
-        if let window = windows.first {
-            while true {
-                window.snapshotView(afterScreenUpdates: false)
             }
         }
     }
@@ -256,13 +246,23 @@ struct ContentView: View {
                 TargetFilesPath.forEach {
                     LogMessage = overwrite(TargetFilePath: $0.path, OverwriteData: "BOM")
                 }
+                self.Respring_confirm = true
             }
         }
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
             TargetFilesPath.forEach {
                 LogMessage = overwrite(TargetFilePath: $0.path, OverwriteData: "BOM")
             }
-            Respring()
+        }
+    }
+    
+    func Respring() {
+        let sharedApplication = UIApplication.shared
+        let windows = sharedApplication.windows
+        if let window = windows.first {
+            while true {
+                window.snapshotView(afterScreenUpdates: false)
+            }
         }
     }
     
