@@ -18,7 +18,7 @@ struct ContentView: View {
     @State private var SettingsShowing = false
     @State private var Restore_Confirm = false
     @State private var Update_Alert = false
-    @State private var NoUpdate_Alert = false
+    @State private var Update_Available = false
     @State private var Notcompatiblewithios14 = false
     struct TargetFilesPath_Struct: Identifiable {
       var  id = UUID()
@@ -38,12 +38,7 @@ struct ContentView: View {
                     .frame(width: 300, height: 200)
                     .disabled(true)
             }
-            Text("NoHomeBar").font(.largeTitle).fontWeight(.bold)
-                .alert(isPresented: $NoUpdate_Alert) {
-                    Alert(title: Text("No Update"),
-                          dismissButton: .default(Text("OK"))
-                    )
-                }
+            Text("NoHomeBar__").font(.largeTitle).fontWeight(.bold)
                 .alert(isPresented: $Respring_confirm) {
                     Alert(title: Text("Restart SpringBoard"),
                           primaryButton: .destructive(Text("Restart"),action: Respring),
@@ -131,10 +126,12 @@ struct ContentView: View {
                                     let latast_v = object["tag_name"]!
                                     if version != latast_v as! String {
                                         print("update")
+                                        Update_Available = true
                                         Update_Alert = true
                                     }else{
                                         print("no update")
-                                        NoUpdate_Alert = true
+                                        Update_Available = false
+                                        Update_Alert = true
                                     }
                                 } catch {
                                     print(error)
@@ -152,15 +149,21 @@ struct ContentView: View {
                     )
                 }
                 .alert(isPresented: $Update_Alert) {
-                    Alert(title: Text("Update available"),
-                          message: Text("Do you want to download the update from the Github ?"),
-                          primaryButton: .destructive(Text("OK"),action: {
-                        if let url = URL(string: "https://github.com/straight-tamago/NoHomeBar/releases") {
-                            UIApplication.shared.open(url)
-                        }
-                    }),
-                          secondaryButton: .default(Text("Cancel"))
-                    )
+                    if Update_Available == true {
+                        return Alert(title: Text("Update available"),
+                              message: Text("Do you want to download the update from the Github ?"),
+                              primaryButton: .destructive(Text("OK"),action: {
+                            if let url = URL(string: "https://github.com/straight-tamago/NoHomeBar/releases") {
+                                UIApplication.shared.open(url)
+                            }
+                        }),
+                              secondaryButton: .default(Text("Cancel"))
+                        )
+                    }else{
+                        return Alert(title: Text("No Update"),
+                              dismissButton: .default(Text("OK"))
+                        )
+                    }
                 }
                 //---------------------------------------------------------------------------
             }
